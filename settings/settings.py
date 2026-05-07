@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_spectacular',
+    'polls',
 ]
 
 MIDDLEWARE = [
@@ -128,7 +129,7 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Coodesh chalenge',
+    'TITLE': 'Coodesh challenge',
     'DESCRIPTION': 'polls api',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
