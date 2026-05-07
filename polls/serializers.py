@@ -4,12 +4,12 @@ from rest_framework import serializers
 from .models import (
     Choice,
     Poll,
+    Vote,
 )
 
 __all__ = (
     'QuestionCreateSerializer',
     'QuestionListSerializer',
-    'Vote',
     'VoteResultsSerializer',
     'VoteSerializer',
 )
@@ -57,6 +57,16 @@ class QuestionCreateSerializer(serializers.ModelSerializer):
 class VoteSerializer(serializers.Serializer):
     choice_id = serializers.IntegerField()
 
+    def validate_choice_id(self, value):
+        if not Choice.objects.filter(id=value).exists():
+            raise serializers.ValidationError(f"Choice with id {value} does not exist.")
+        return value
+
+    def save(self, **kwargs):
+        choice_id = self.validated_data['choice_id']
+        vote = Vote.objects.create(choice_id=choice_id)
+        return vote
+
 
 class InnerChoiceSerializer(serializers.Serializer):
     question = serializers.CharField()
@@ -67,7 +77,3 @@ class VoteResultsSerializer(serializers.Serializer):
     question = serializers.CharField()
     total_votes = serializers.IntegerField()
     choices = InnerChoiceSerializer(many=True)
-
-
-class Vote(serializers.Serializer):
-    choice_id = serializers.IntegerField()
