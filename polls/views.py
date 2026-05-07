@@ -21,8 +21,10 @@ class QuestionCreateListAPIView(ListCreateAPIView):
 
 
 class SubmitVoteView(CreateAPIView):
+    '''submit a vote'''
     serializer_class = VoteSerializer
 
 
 class VoteResultsView(RetrieveAPIView):
+    '''get the clave for polls'''
     serializer_class = VoteResultsSerializer
