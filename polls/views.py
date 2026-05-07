@@ -1,14 +1,18 @@
 from rest_framework.generics import (
     CreateAPIView,
     ListCreateAPIView,
+    RetrieveAPIView,
 )
 from .serializers import (
     QuestionSerializer,
     VoteSerializer,
+    VoteResultsSerializer,
 )
 
 __all__ = (
     'QuestionCreateListAPIView',
+    'SubmitVoteView',
+    'VoteResultsView',
 )
 
 class QuestionCreateListAPIView(ListCreateAPIView):
@@ -16,6 +20,9 @@ class QuestionCreateListAPIView(ListCreateAPIView):
     serializer_class = QuestionSerializer
 
 
-class VoteView(CreateAPIView):
+class SubmitVoteView(CreateAPIView):
     serializer_class = VoteSerializer
 
+
+class VoteResultsView(RetrieveAPIView):
+    serializer_class = VoteResultsSerializer
