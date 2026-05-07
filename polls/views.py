@@ -3,6 +3,10 @@ from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveAPIView,
 )
+
+from .models import (
+    Poll,
+)
 from .serializers import (
     QuestionSerializer,
     VoteSerializer,
@@ -18,6 +22,7 @@ __all__ = (
 class QuestionCreateListAPIView(ListCreateAPIView):
     '''creation and list Polls'''
     serializer_class = QuestionSerializer
+    queryset = Poll.objects.prefetch_related('choice_set')
 
 
 class SubmitVoteView(CreateAPIView):
