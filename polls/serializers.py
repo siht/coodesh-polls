@@ -1,3 +1,5 @@
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
 from django.db import transaction
 from rest_framework import serializers
 
@@ -76,6 +78,7 @@ class InnerChoiceSerializer(serializers.ModelSerializer):
         model = Choice
         fields = ('question', 'votes')
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_votes(self, obj):
         return Vote.objects.filter(choice=obj).count()
 
@@ -88,5 +91,6 @@ class VoteResultsSerializer(serializers.ModelSerializer):
         model = Poll
         fields = ('id', 'question', 'total_votes', 'choices')
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_total_votes(self, obj):
         return Vote.objects.filter(choice__poll=obj).count()
