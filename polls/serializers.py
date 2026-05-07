@@ -68,12 +68,25 @@ class VoteSerializer(serializers.Serializer):
         return vote
 
 
-class InnerChoiceSerializer(serializers.Serializer):
-    question = serializers.CharField()
-    votes = serializers.IntegerField()
+class InnerChoiceSerializer(serializers.ModelSerializer):
+    question = serializers.CharField(source='text')
+    votes = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Choice
+        fields = ('question', 'votes')
+
+    def get_votes(self, obj):
+        return Vote.objects.filter(choice=obj).count()
 
 
-class VoteResultsSerializer(serializers.Serializer):
-    question = serializers.CharField()
-    total_votes = serializers.IntegerField()
-    choices = InnerChoiceSerializer(many=True)
+class VoteResultsSerializer(serializers.ModelSerializer):
+    total_votes = serializers.SerializerMethodField()
+    choices = InnerChoiceSerializer(many=True, source='choice_set')
+
+    class Meta:
+        model = Poll
+        fields = ('id', 'question', 'total_votes', 'choices')
+
+    def get_total_votes(self, obj):
+        return Vote.objects.filter(choice__poll=obj).count()
