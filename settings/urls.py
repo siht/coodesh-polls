@@ -25,12 +25,14 @@ from drf_spectacular.views import (
 
 from polls.views import (
     QuestionCreateListAPIView,
-    VoteView,
+    SubmitVoteView,
+    VoteResultsView,
 )
 
 urlpatterns = [
     path('api/polls/', QuestionCreateListAPIView.as_view(), name='create-list-poll'),
-    path('api/vote/', VoteView.as_view(), name='submit-vote'),
+    path('api/polls/<int:id>/results/', VoteResultsView.as_view(), name='clave'),
+    path('api/vote/', SubmitVoteView.as_view(), name='submit-vote'),
     path('admin/', admin.site.urls),
     path('openapi/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('openapi/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
