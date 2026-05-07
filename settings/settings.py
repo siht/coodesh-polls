@@ -55,7 +55,16 @@ MIDDLEWARE = [
     'settings.middleware.ProcessTimeMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False 
+
+# Define explícitamente tu URL de React
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# Permite que Django acepte las credenciales que envía tu api.js
+CORS_ALLOW_CREDENTIALS = True
 
 
 ROOT_URLCONF = 'settings.urls'
