@@ -7,3 +7,7 @@ This is a challenge by [Coodesh](https://coodesh.com/)
 - prefer use a virtual environment (venv, conda, etc)
 - python 3.14
 - requirements.txt must be installed `pip install -r requiremtens.txt`
+
+## urls
+- /openapi/schema/swagger-ui/
+- /openapi/schema/redoc/

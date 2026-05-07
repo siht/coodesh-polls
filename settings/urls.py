@@ -17,6 +17,24 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
+
+from polls.views import (
+    QuestionCreateListAPIView,
+    SubmitVoteView,
+    VoteResultsView,
+)
+
 urlpatterns = [
+    path('api/polls/', QuestionCreateListAPIView.as_view(), name='create-list-poll'),
+    path('api/polls/<int:id>/results/', VoteResultsView.as_view(), name='clave'),
+    path('api/vote/', SubmitVoteView.as_view(), name='submit-vote'),
     path('admin/', admin.site.urls),
+    path('openapi/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('openapi/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('openapi/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
