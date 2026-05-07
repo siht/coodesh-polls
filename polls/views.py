@@ -74,3 +74,5 @@ class SubmitVoteView(CreateAPIView):
 class VoteResultsView(RetrieveAPIView):
     '''get the clave for polls'''
     serializer_class = VoteResultsSerializer
+    queryset = Poll.objects.all()
+    lookup_field = 'id'
