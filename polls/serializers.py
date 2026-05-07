@@ -1,5 +1,9 @@
 from rest_framework import serializers
 
+from .models import (
+    Poll,
+)
+
 __all__ = (
     'QuestionSerializer',
     'Vote',
@@ -14,10 +18,12 @@ class InnerChoiceListSerializer(serializers.Serializer):
     choice_text = serializers.CharField()
 
 
-class QuestionSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    question = serializers.CharField()
-    choices = InnerChoiceListSerializer(many=True)
+class QuestionSerializer(serializers.ModelSerializer):
+    choices = InnerChoiceListSerializer(many=True, source='choice_set')
+
+    class Meta:
+        model = Poll
+        fields = ('id', 'question', 'choices')
 
 
 class VoteSerializer(serializers.Serializer):
