@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 __all__ = (
     'QuestionSerializer',
+    'Vote',
+    'VoteResultsSerializer',
     'VoteResultsSerializer',
     'VoteSerializer',
 )
@@ -31,3 +33,13 @@ class VoteResultsSerializer(serializers.Serializer):
     question = serializers.CharField()
     total_votes = serializers.IntegerField()
     choices = InnerChoiceSerializer(many=True)
+
+
+class VoteResultsSerializer(serializers.Serializer):
+    question = serializers.CharField()
+    total_votes = serializers.IntegerField()
+    choices = InnerChoiceSerializer(many=True)
+
+
+class Vote(serializers.Serializer):
+    choice_id = serializers.IntegerField()
