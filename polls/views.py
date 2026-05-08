@@ -1,5 +1,9 @@
 from collections import defaultdict
 
+from django.db.models import (
+    Count,
+    Prefetch,
+)
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
@@ -10,6 +14,7 @@ from rest_framework.response import Response
 
 
 from .models import (
+    Choice,
     Poll,
 )
 from .serializers import (
@@ -74,5 +79,11 @@ class SubmitVoteView(CreateAPIView):
 class VoteResultsView(RetrieveAPIView):
     '''get the clave for polls'''
     serializer_class = VoteResultsSerializer
-    queryset = Poll.objects.all()
+    queryset = (Poll.objects
+        .annotate(
+            total_votes=Count('choice__vote')
+        ).prefetch_related(
+            Prefetch('choice_set', queryset=Choice.objects.annotate(votes=Count('vote')))
+        )
+    )
     lookup_field = 'id'

@@ -72,25 +72,17 @@ class VoteSerializer(serializers.Serializer):
 
 class InnerChoiceSerializer(serializers.ModelSerializer):
     question = serializers.CharField(source='text')
-    votes = serializers.SerializerMethodField()
+    votes = serializers.IntegerField()
 
     class Meta:
         model = Choice
         fields = ('question', 'votes')
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_votes(self, obj):
-        return Vote.objects.filter(choice=obj).count()
-
 
 class VoteResultsSerializer(serializers.ModelSerializer):
-    total_votes = serializers.SerializerMethodField()
+    total_votes = serializers.IntegerField()
     choices = InnerChoiceSerializer(many=True, source='choice_set')
 
     class Meta:
         model = Poll
-        fields = ('id', 'question', 'total_votes', 'choices')
-
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_total_votes(self, obj):
-        return Vote.objects.filter(choice__poll=obj).count()
+        fields = ('id', 'question', 'total_votes', 'choices', 'total_votes')
